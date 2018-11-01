@@ -43,7 +43,7 @@ class LaraCartServiceProvider extends ServiceProvider
         $this->app->singleton('cart', function ($app) {
             /** @var Application $app */
             $cartIdentifierStorage = config('laracart.identifier_storage');
-            $cartIdentifier = $cartIdentifierStorage == 'cookie' ? $app->make('request')->cookie('cart_id') : $app->make('session')->get('cart_id', null);
+            $cartIdentifier = $cartIdentifierStorage == 'cookie' ? $app->make('request')->cookie('cart_id', null) : $app->make('session')->get('cart_id', null);
 
             return new Cart($cartIdentifier, $cartIdentifierStorage);
         });
