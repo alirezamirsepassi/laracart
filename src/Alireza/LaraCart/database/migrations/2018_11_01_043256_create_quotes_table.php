@@ -14,8 +14,14 @@ class CreateQuotesTable extends Migration
     public function up()
     {
         Schema::create('quotes', function (Blueprint $table) {
-            $table->increments('id');
+            $table->string('cart_id')->unique()->index();
+
+            $table->dateTime('converted_at')->nullable(true);
             $table->timestamps();
+        });
+
+        Schema::table('quotes', function (Blueprint $table) {
+            $table->primary(['cart_id']);
         });
     }
 

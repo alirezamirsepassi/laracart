@@ -15,7 +15,13 @@ class CreateQuoteItemsTable extends Migration
     {
         Schema::create('quote_items', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('cart_id')->index();
+
             $table->timestamps();
+        });
+
+        Schema::table('quote_items', function (Blueprint $table) {
+            $table->foreign('cart_id')->references('cart_id')->on('quotes')->onDelete('cascade');
         });
     }
 

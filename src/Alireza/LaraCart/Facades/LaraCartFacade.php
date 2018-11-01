@@ -1,5 +1,5 @@
 <?php
-namespace Darryldecode\Cart\Facades;
+namespace Alireza\LaraCart\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
