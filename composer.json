@@ -1,0 +1,19 @@
+{
+    "name": "alireza/laracart",
+    "description": "Laravel advanced cart implemention",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alireza Mirsepassi",
+            "email": "alirezamirsepassi@gmail.com"
+        }
+    ],
+    "require": {},
+    "require-dev": {},
+    "autoload": {
+        "psr-4": {
+            "Alireza\\": "src/Alireza"
+        }
+    },
+    "minimum-stability": "dev",
+}
