@@ -1,6 +1,6 @@
 {
     "name": "alireza/laracart",
-    "description": "Laravel advanced cart implemention",
+    "description": "Laravel advanced cart implementation",
     "license": "MIT",
     "authors": [
         {
@@ -22,7 +22,7 @@
                 "Alireza\\LaraCart\\LaraCartServiceProvider"
             ],
             "aliases": {
-                "Cart": "Alireza\\LaraCart\\Facades\\LaraCartFacade"
+                "LaraCart": "Alireza\\LaraCart\\Facades\\LaraCart"
             }
         }
     }

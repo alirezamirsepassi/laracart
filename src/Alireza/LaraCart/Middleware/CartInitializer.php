@@ -3,6 +3,7 @@ namespace Alireza\LaraCart\Middleware;
 
 use Closure;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Crypt;
 
 class CartInitializer
 {
@@ -15,7 +16,7 @@ class CartInitializer
      */
     public function handle($request, Closure $next)
     {
-        $cart_storage = config('laraCart.identifier_storage', 'session');
+        $cart_storage = config('laracart.identifier_storage', 'session');
         $cart_key = uniqid('cart_');
 
         /** @var Response $response */
@@ -26,7 +27,7 @@ class CartInitializer
                     return $next($request);
                 }
 
-                $response = $response->withCookie(cookie()->forever('cart_id', $cart_key));
+                $response->withCookie(cookie()->forever('cart_id', Crypt::encrypt($cart_key, false)));
                 break;
             case "session":
             default:

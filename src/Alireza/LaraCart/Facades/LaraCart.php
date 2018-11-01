@@ -3,7 +3,7 @@ namespace Alireza\LaraCart\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class LaraCartFacade extends Facade
+class LaraCart extends Facade
 {
     protected static function getFacadeAccessor()
     {

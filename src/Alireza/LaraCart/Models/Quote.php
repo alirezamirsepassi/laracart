@@ -13,10 +13,9 @@ class Quote extends Model
     */
 
     protected $table = 'quotes';
-    protected $primaryKey = 'cart_id';
     protected $guarded = [];
     protected $fillable = [
-        'cart_id'
+        'id'
     ];
     protected $casts = [];
     protected $dates = ['converted_at'];
@@ -39,6 +38,11 @@ class Quote extends Model
     public function items()
     {
         return $this->hasMany(QuoteItem::class);
+    }
+
+    public function conditions()
+    {
+        return $this->hasMany(QuoteCondition::class);
     }
 
     /*

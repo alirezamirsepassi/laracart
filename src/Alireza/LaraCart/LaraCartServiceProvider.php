@@ -2,11 +2,10 @@
 
 namespace Alireza\LaraCart;
 
-use Alireza\LaraCart\Middleware\CartInitializer;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
+use Alireza\LaraCart\Middleware\CartInitializer;
 
 class LaraCartServiceProvider extends ServiceProvider
 {
@@ -15,7 +14,7 @@ class LaraCartServiceProvider extends ServiceProvider
      *
      * @var bool
      */
-    protected $defer = true;
+    protected $defer = false;
 
     /**
      * Boot the service provider.
@@ -23,7 +22,7 @@ class LaraCartServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
-        $this->mergeConfigFrom(__DIR__ . '/Config/laracart.php', 'laraCart');
+        $this->mergeConfigFrom(__DIR__ . '/config/laracart.php', 'laracart');
         $this->app[Kernel::class]->pushMiddleware(CartInitializer::class);
 
         $this->publishes([
@@ -43,9 +42,10 @@ class LaraCartServiceProvider extends ServiceProvider
     {
         $this->app->singleton('cart', function ($app) {
             /** @var Application $app */
-            $cartIdentifierStorage = config('laraCart.identifier_storage');
-            $cartIdentifier = $app->make($cartIdentifierStorage)->get('cart_id', null);
-            return new LaraCart($cartIdentifier, $cartIdentifierStorage);
+            $cartIdentifierStorage = config('laracart.identifier_storage');
+            $cartIdentifier = $cartIdentifierStorage == 'cookie' ? $app->make('request')->cookie('cart_id') : $app->make('session')->get('cart_id', null);
+
+            return new Cart($cartIdentifier, $cartIdentifierStorage);
         });
     }
 
