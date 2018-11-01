@@ -16,4 +16,14 @@
         }
     },
     "minimum-stability": "dev",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Alireza\\LaraCart\\LaraCartServiceProvider"
+            ],
+            "aliases": {
+                "Cart": "Alireza\\LaraCart\\Facades\\LaraCartFacade"
+            }
+        }
+    }
 }
