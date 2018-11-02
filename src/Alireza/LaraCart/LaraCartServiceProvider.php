@@ -28,9 +28,9 @@ class LaraCartServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/config/laracart.php' => config_path('laracart.php'),
         ], 'config');
-        $this->publishes([
-            __DIR__ . '/database/migrations' => database_path('migrations'),
-        ], 'migrations');
+        // $this->publishes([
+        //     __DIR__ . '/database/migrations' => database_path('migrations'),
+        // ], 'migrations');
     }
 
     /**

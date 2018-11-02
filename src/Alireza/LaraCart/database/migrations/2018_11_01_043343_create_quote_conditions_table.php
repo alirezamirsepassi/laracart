@@ -18,6 +18,7 @@ class CreateQuoteConditionsTable extends Migration
             $table->string('quote_id');
             $table->string('name')->nullable(true);
             $table->string('type')->nullable(true);
+            $table->string('target')->nullable(true);
             $table->string('value')->nullable(true);
             $table->float('order')->default(1)->nullable();
 
