@@ -23,19 +23,17 @@ class CartInitializer
         $response = $next($request);
         switch ($cart_storage) {
             case "cookie":
-                if($request->hasCookie('cart_id')) {
-                    return $next($request);
+                if(!$request->hasCookie('cart_id')) {
+                    $response->withCookie(cookie()->forever('cart_id', Crypt::encrypt($cart_key, false)));
                 }
 
-                $response->withCookie(cookie()->forever('cart_id', Crypt::encrypt($cart_key, false)));
                 break;
             case "session":
             default:
-                if ($request->session()->exists('cart_id')) {
-                    return $next($request);
+                if (!$request->session()->exists('cart_id')) {
+                    \session(['cart_id' => $cart_key]);
                 }
 
-                \session(['cart_id' => $cart_key]);
                 break;
         }
         return $response;

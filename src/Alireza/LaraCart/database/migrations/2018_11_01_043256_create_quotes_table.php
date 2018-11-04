@@ -27,6 +27,7 @@ class CreateQuotesTable extends Migration
             $table->float('subtotal')->default(0);
             $table->float('total')->default(0);
 
+            $table->longText('attributes')->nullable(true);
             $table->dateTime('converted_at')->nullable(true);
             $table->timestamps();
         });

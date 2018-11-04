@@ -14,9 +14,10 @@ class QuoteItem extends Model
 
     protected $table = 'quote_items';
     protected $guarded = ['id'];
+    protected $touches = ['quote'];
     protected $fillable = [
         'quote_id', 'product_id', 'product_name', 'product_price',
-        'product_qty', 'sub_total', 'total', 'attributes'
+        'product_qty', 'subtotal', 'total', 'attributes'
     ];
     protected $casts = [
         'attributes'    =>  'array'

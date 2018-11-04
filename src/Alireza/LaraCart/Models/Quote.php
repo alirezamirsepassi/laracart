@@ -15,9 +15,11 @@ class Quote extends Model
     protected $table = 'quotes';
     protected $guarded = [];
     protected $fillable = [
-        'id'
+        'id', 'attributes'
     ];
-    protected $casts = [];
+    protected $casts = [
+        'attributes'    =>  'array'
+    ];
     protected $dates = ['converted_at'];
     public $timestamps = true;
     public $incrementing = false;

@@ -5,10 +5,14 @@ use Alireza\LaraCart\Exceptions\CartIdentifierIsEmpty;
 use Alireza\LaraCart\Exceptions\CartItemDoesNotExist;
 use Alireza\LaraCart\Models\Quote;
 use Alireza\LaraCart\Models\QuoteItem;
-use Illuminate\Support\Collection;
 
 class Cart
 {
+    /**
+     * Quote model on the instance.
+     * @var Quote $quote
+     */
+    protected $quote;
     protected $identifier;
     protected $identifierStorage;
 
@@ -35,8 +39,8 @@ class Cart
         if ($this->identifier === null)
             throw new CartIdentifierIsEmpty();
 
-        return Quote::firstOrCreate([
-            'id'   =>  $this->identifier
+        return $this->quote ? $this->quote : $this->quote = Quote::firstOrCreate([
+            'id' => $this->identifier
         ], []);
     }
 
@@ -48,8 +52,7 @@ class Cart
      */
     public function getQuoteItems()
     {
-        $quote = $this->getQuote();
-        return $quote->items;
+        return $this->getQuote()->items;
     }
 
     /**
@@ -66,11 +69,22 @@ class Cart
         return $this->getCartContent();
     }
 
+    /**
+     * Add cart item.
+     *
+     * @param       $productId
+     * @param null  $productName
+     * @param int   $productPrice
+     * @param int   $productQty
+     * @param array $attributes
+     * @param array $conditions
+     *
+     * @return Quote
+     * @throws CartIdentifierIsEmpty
+     */
     public function addItem($productId, $productName = null, $productPrice = 0, $productQty = 1, $attributes = [], $conditions = [])
     {
-        $quote = $this->getQuote();
-        /** @var QuoteItem $quote_item */
-        $quote_item = $quote->items()->firstOrCreate([
+        $quote_item = $this->getQuote()->items()->firstOrCreate([
             'product_id'        =>  $productId
         ], [
             'product_name'      =>  $productName,
@@ -79,14 +93,14 @@ class Cart
             'attributes'        =>  $attributes,
         ]);
 
-        if (!$quote_item->wasRecentlyCreated)
-            $this->updateItem(
-                $quote_item->id,
-                $quote_item->toArray() + ['product_qty'=>$quote_item->product_qty+$productQty]
-            );
+        if (!$quote_item->wasRecentlyCreated) {
+            $this->updateItem($quote_item->id, array_merge($quote_item->toArray(), ['product_qty' => $quote_item->product_qty + $productQty]));
+        }
 
         return $this->getCartContent();
     }
+
+    public function addItems(Array $items){}
 
     /**
      * Update cart item.
@@ -133,8 +147,7 @@ class Cart
      */
     public function getItem($itemId)
     {
-        $items = $this->getQuoteItems();
-        return $items->find($itemId);
+        return $this->getQuoteItems()->find($itemId);
     }
 
     /**
@@ -145,7 +158,7 @@ class Cart
      */
     public function getCartContent()
     {
-        return $this->getQuote()->load(['items.conditions', 'conditions']);
+        return $this->getQuote()->refresh()->loadMissing(['items.conditions', 'conditions']);
     }
 
     /**
@@ -167,8 +180,7 @@ class Cart
      */
     public function getTotalQuantity()
     {
-        $items = $this->getQuoteItems();
-        return $items->sum('product_qty');
+        return $this->getQuoteItems()->sum('product_qty');
     }
 
     /**
@@ -341,10 +353,11 @@ class Cart
      *
      * @return Quote
      * @throws CartIdentifierIsEmpty
+     * @throws \Exception
      */
     public function removeCondition($conditionId)
     {
-        $condition = $this->getCondition($conditionId;
+        $condition = $this->getCondition($conditionId);
         if ($condition)
             $condition->delete();
 

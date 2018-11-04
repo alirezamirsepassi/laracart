@@ -21,7 +21,7 @@ class CreateQuoteItemsTable extends Migration
             $table->unsignedInteger('product_id')->index()->nullable(true);
             $table->string('product_name')->nullable(true);
             $table->float('product_price')->nullable(true);
-            $table->string('product_qty')->nullable(true);
+            $table->float('product_qty')->nullable(true);
 
 
             // Prices
